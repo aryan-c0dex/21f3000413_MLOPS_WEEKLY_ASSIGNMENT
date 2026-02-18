@@ -1,11 +1,11 @@
 # MLOps Week 01 Assignment
 
-Objective
+## Objective
 
 Set up a basic ML pipeline in GCP using Vertex AI and Google Cloud Storage.
 Train an IRIS classifier, store artifacts in GCS using timestamp folders, and run inference using a separate script.
 
-Project Files
+## Project Files
 
 src/train.py
 Trains a RandomForest model using iris dataset from GCS.
@@ -17,7 +17,7 @@ Downloads a trained model from GCS (based on timestamp) and runs prediction.
 requirements.txt
 Contains required Python libraries.
 
-GCS Structure
+## GCS Structure
 
 Bucket contains:
 
@@ -38,7 +38,7 @@ Run inference:
 
 python src/inference.py <timestamp>
 
-Learnings
+## Learnings
 
 Understood how to store and fetch data from GCS
 
