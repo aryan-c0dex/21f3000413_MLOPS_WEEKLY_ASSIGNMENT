@@ -32,21 +32,5 @@ accuracy = accuracy_score(y_test, preds)
 
 print(f"Model Accuracy: {accuracy}")
 
-# Create timestamp folder
-timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
-local_model_path = "model.pkl"
-local_metrics_path = "metrics.txt"
+joblib.dump(model, "model/model.pkl")
 
-# Save locally
-joblib.dump(model, local_model_path)
-
-with open(local_metrics_path, "w") as f:
-    f.write(f"Accuracy: {accuracy}")
-
-# Upload to GCS
-artifact_path = f"gs://{BUCKET_NAME}/artifacts/{timestamp}/"
-
-subprocess.run(["gsutil", "cp", local_model_path, artifact_path])
-subprocess.run(["gsutil", "cp", local_metrics_path, artifact_path])
-
-print(f"Artifacts stored at: {artifact_path}")
