@@ -1,0 +1,41 @@
+name: iris-ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install dvc[gcs]
+          pip install pytest
+          pip install cml
+
+      - name: Pull data and models
+        run: |
+          dvc pull
+
+      - name: Run tests
+        run: |
+          pytest
+
+      - name: Publish report with CML
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "## CI Test Results" > report.md
+          pytest >> report.md
+          cml comment create report.md
