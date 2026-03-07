@@ -1,0 +1,5 @@
+[core]
+    remote = gcsremote
+    autostage = true
+['remote "gcsremote"']
+    url = gs://21f3000413-mlops-week1-bucket/dvc-store
