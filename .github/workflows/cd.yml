@@ -43,3 +43,10 @@ jobs:
         run: |
           kubectl set image deployment/iris-api iris-api=us-central1-docker.pkg.dev/mindful-girder-487814-j2/iris-repo/iris-api:${{ github.sha }}
           kubectl rollout status deployment/iris-api
+
+      - name: Install wrk
+        run: sudo apt-get install wrk -y
+
+      - name: Run stress test
+        run: |
+          wrk -t4 -c1000 -d30s -s wrk_post.lua http://34.122.50.39/predict
