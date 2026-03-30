@@ -17,3 +17,10 @@ spec:
         image: us-central1-docker.pkg.dev/mindful-girder-487814-j2/iris-repo/iris-api:latest
         ports:
         - containerPort: 5001
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
