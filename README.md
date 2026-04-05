@@ -38,7 +38,7 @@ Run inference:
 
 python src/inference.py <timestamp>
 
-## Learnings
+## Learnings 
 
 Understood how to store and fetch data from GCS
 
