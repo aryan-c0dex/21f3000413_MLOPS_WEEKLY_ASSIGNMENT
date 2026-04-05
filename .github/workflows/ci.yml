@@ -26,7 +26,7 @@ jobs:
         run: |
           pip install -r requirements.txt
           pip install dvc dvc-gs
-          pip install pytest
+          pip install pytest feast
 
       - name: Pull data and models
         run: dvc pull --force
