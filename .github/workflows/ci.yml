@@ -17,6 +17,15 @@ jobs:
         with:
           python-version: '3.10'
 
+      # ✅ ADD THIS (GCP AUTH)
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
@@ -24,13 +33,12 @@ jobs:
           pip install pytest
           pip install cml
 
+      # ✅ NOW THIS WILL WORK
       - name: Pull data and models
-        run: |
-          dvc pull
+        run: dvc pull --force
 
       - name: Run tests
-        run: |
-          pytest
+        run: pytest
 
       - name: Publish report with CML
         env:
