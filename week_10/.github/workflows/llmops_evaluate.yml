@@ -1,0 +1,57 @@
+name: LLMOps - Evaluate Fine-tuned Gemini Models
+
+on:
+  push:
+    branches: [week_10]
+
+env:
+  GOOGLE_CLOUD_PROJECT: mindful-girder-487814-j2
+  VERTEX_LOCATION: us-central1
+  ACCURACY_THRESHOLD: "0.30"
+
+jobs:
+  evaluate:
+    name: Evaluate v1 vs v2 Models
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: pip install google-cloud-aiplatform
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Run evaluation
+        run: python week_10/evaluation/evaluate.py
+
+      - name: Check accuracy threshold
+        run: |
+          python - << 'PYEOF'
+          import json, sys
+          with open("week_10/evaluation/results.json") as f:
+              data = json.load(f)
+          best = max(data["v1"]["accuracy"], data["v2"]["accuracy"])
+          threshold = float("${{ env.ACCURACY_THRESHOLD }}")
+          print(f"Best accuracy: {best:.2%}  Threshold: {threshold:.2%}")
+          if best < threshold:
+              print("FAIL: accuracy below threshold!")
+              sys.exit(1)
+          print("PASS: accuracy above threshold!")
+          PYEOF
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evaluation-results
+          path: week_10/evaluation/results.json
