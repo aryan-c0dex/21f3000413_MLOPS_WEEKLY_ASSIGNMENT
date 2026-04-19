@@ -1,0 +1,12 @@
+{
+  "v1": {
+    "accuracy": 0.3667,
+    "exact_match": 0.0,
+    "format_compliance": 0.9667
+  },
+  "v2": {
+    "accuracy": 0.1667,
+    "exact_match": 0.0,
+    "format_compliance": 0.3
+  }
+}
